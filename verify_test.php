@@ -1,6 +1,6 @@
 <?php
-$hash = '$2y$10$oYoPm0Tn716FTXYnaPGtMOaUpvR.yGEXOcdbtnHtW6HysHnGaTUsi';
-if (password_verify('123456', $hash)) {
+$hash = '$2y$10$V5FFaUtkgkDwfZfIDIS/JehXW4mfOiR29dMhNYowFarxyFhCO5je2';
+if (password_verify('admin1234', $hash)) {
     echo "✅ Password matches!";
 } else {
     echo "❌ Password invalid.";

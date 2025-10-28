@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-  header('Location: /login.php');
+if ($_SESSION['role'] != 'admin') {
+  header("Location: ../login.php");
   exit;
 }
 include('../config/db.php');
@@ -13,19 +13,24 @@ $kpi = ['id' => '', 'user_id' => '', 'productivity' => '', 'efficiency' => '', '
 if (isset($_GET['edit'])) {
   $editing = true;
   $id = intval($_GET['edit']);
-  $res = $conn->query("SELECT * FROM kpi_scores WHERE id=$id LIMIT 1");
-  $kpi = $res->fetch_assoc();
+  $res = $conn->query("SELECT * FROM kpi_scores WHERE id=$id");
+  if ($res->num_rows > 0) {
+    $kpi = $res->fetch_assoc();
+  }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $id = isset($_POST['id']) ? intval($_POST['id']) : null;
   $user_id = intval($_POST['user_id']);
   $prod = floatval($_POST['productivity']);
   $eff = floatval($_POST['efficiency']);
   $qual = floatval($_POST['quality']);
   $sched = floatval($_POST['schedule_adherence']);
-  $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 
+  // ✅ Compute total with weights
   $total = ($prod * 0.4) + ($eff * 0.2) + ($qual * 0.2) + ($sched * 0.2);
+
+  // ✅ Compute grade based on total
   if ($total >= 100)
     $grade = 'EX';
   elseif ($total >= 95)
@@ -38,23 +43,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $grade = 'UN';
 
   if ($id) {
-    $stmt = $conn->prepare("UPDATE kpi_scores SET productivity=?, efficiency=?, quality=?, schedule_adherence=?, total_score=?, grade=? WHERE id=?");
-    $stmt->bind_param('ddddsdi', $prod, $eff, $qual, $sched, $total, $grade, $id);
-    $stmt->execute();
-    $stmt->close();
+    // ✅ Update existing KPI
+    $sql = "UPDATE kpi_scores 
+            SET productivity='$prod', efficiency='$eff', quality='$qual', 
+                schedule_adherence='$sched', total_score='$total', grade='$grade' 
+            WHERE id='$id'";
   } else {
-    $stmt = $conn->prepare("INSERT INTO kpi_scores (user_id, productivity, efficiency, quality, schedule_adherence, total_score, grade) VALUES (?,?,?,?,?,?,?)");
-    $stmt->bind_param('idddids', $user_id, $prod, $eff, $qual, $sched, $total, $grade);
-    $stmt->execute();
-    $stmt->close();
+    // ✅ Insert new KPI
+    $sql = "INSERT INTO kpi_scores (user_id, productivity, efficiency, quality, schedule_adherence, total_score, grade)
+            VALUES ('$user_id', '$prod', '$eff', '$qual', '$sched', '$total', '$grade')";
   }
-  header('Location: dashboard.php');
-  exit;
+
+  if ($conn->query($sql)) {
+    header("Location: dashboard.php");
+    exit;
+  } else {
+    echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+  }
 }
 
-$users = $conn->query("SELECT * FROM users WHERE role='employee' ORDER BY username");
+$users = $conn->query("SELECT * FROM users WHERE role='employee'");
 ?>
-<h2 class="mb-3"><?= $editing ? 'Edit KPI' : 'Add KPI' ?></h2>
+
+<h2 class="mb-4"><?= $editing ? "Edit KPI" : "Add KPI" ?></h2>
 
 <form method="POST" class="card p-4 shadow-sm">
   <?php if ($editing): ?>
@@ -63,11 +74,12 @@ $users = $conn->query("SELECT * FROM users WHERE role='employee' ORDER BY userna
 
   <div class="mb-3">
     <label class="form-label">Employee</label>
-    <select name="user_id" class="form-select" <?= $editing ? 'disabled' : '' ?> required>
-      <option value="">-- Select employee --</option>
+    <select name="user_id" class="form-select" required>
+      <option value="">Select Employee</option>
       <?php while ($u = $users->fetch_assoc()): ?>
         <option value="<?= $u['id'] ?>" <?= ($u['id'] == $kpi['user_id']) ? 'selected' : '' ?>>
-          <?= htmlspecialchars($u['username']) ?></option>
+          <?= htmlspecialchars($u['username']) ?>
+        </option>
       <?php endwhile; ?>
     </select>
   </div>
@@ -97,7 +109,7 @@ $users = $conn->query("SELECT * FROM users WHERE role='employee' ORDER BY userna
     </div>
   </div>
 
-  <button class="btn btn-success"><?= $editing ? 'Update' : 'Save' ?></button>
+  <button type="submit" class="btn btn-success"><?= $editing ? "Update" : "Save" ?></button>
   <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
 </form>
 
