@@ -8,7 +8,7 @@ include('../config/db.php');
 include('../includes/header.php');
 
 $editing = false;
-$kpi = ['id'=>'','user_id'=>'','productivity'=>'','efficiency'=>'','quality'=>'','schedule_adherence'=>''];
+$kpi = ['id' => '', 'user_id' => '', 'productivity' => '', 'efficiency' => '', 'quality' => '', 'schedule_adherence' => ''];
 
 if (isset($_GET['edit'])) {
   $editing = true;
@@ -26,11 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 
   $total = ($prod * 0.4) + ($eff * 0.2) + ($qual * 0.2) + ($sched * 0.2);
-  if ($total >= 100) $grade = 'EX';
-  elseif ($total >= 95) $grade = 'EE';
-  elseif ($total >= 90) $grade = 'ME';
-  elseif ($total >= 85) $grade = 'NI';
-  else $grade = 'UN';
+  if ($total >= 100)
+    $grade = 'EX';
+  elseif ($total >= 95)
+    $grade = 'EE';
+  elseif ($total >= 90)
+    $grade = 'ME';
+  elseif ($total >= 85)
+    $grade = 'NI';
+  else
+    $grade = 'UN';
 
   if ($id) {
     $stmt = $conn->prepare("UPDATE kpi_scores SET productivity=?, efficiency=?, quality=?, schedule_adherence=?, total_score=?, grade=? WHERE id=?");
@@ -52,7 +57,7 @@ $users = $conn->query("SELECT * FROM users WHERE role='employee' ORDER BY userna
 <h2 class="mb-3"><?= $editing ? 'Edit KPI' : 'Add KPI' ?></h2>
 
 <form method="POST" class="card p-4 shadow-sm">
-  <?php if($editing): ?>
+  <?php if ($editing): ?>
     <input type="hidden" name="id" value="<?= $kpi['id'] ?>">
   <?php endif; ?>
 
@@ -60,8 +65,9 @@ $users = $conn->query("SELECT * FROM users WHERE role='employee' ORDER BY userna
     <label class="form-label">Employee</label>
     <select name="user_id" class="form-select" <?= $editing ? 'disabled' : '' ?> required>
       <option value="">-- Select employee --</option>
-      <?php while($u = $users->fetch_assoc()): ?>
-        <option value="<?= $u['id'] ?>" <?= ($u['id']==$kpi['user_id']) ? 'selected' : '' ?>><?= htmlspecialchars($u['username']) ?></option>
+      <?php while ($u = $users->fetch_assoc()): ?>
+        <option value="<?= $u['id'] ?>" <?= ($u['id'] == $kpi['user_id']) ? 'selected' : '' ?>>
+          <?= htmlspecialchars($u['username']) ?></option>
       <?php endwhile; ?>
     </select>
   </div>
@@ -69,11 +75,13 @@ $users = $conn->query("SELECT * FROM users WHERE role='employee' ORDER BY userna
   <div class="row">
     <div class="col-md-6 mb-3">
       <label class="form-label">Productivity (40%)</label>
-      <input type="number" step="0.01" name="productivity" class="form-control" value="<?= $kpi['productivity'] ?>" required>
+      <input type="number" step="0.01" name="productivity" class="form-control" value="<?= $kpi['productivity'] ?>"
+        required>
     </div>
     <div class="col-md-6 mb-3">
       <label class="form-label">Efficiency (20%)</label>
-      <input type="number" step="0.01" name="efficiency" class="form-control" value="<?= $kpi['efficiency'] ?>" required>
+      <input type="number" step="0.01" name="efficiency" class="form-control" value="<?= $kpi['efficiency'] ?>"
+        required>
     </div>
   </div>
 
@@ -84,7 +92,8 @@ $users = $conn->query("SELECT * FROM users WHERE role='employee' ORDER BY userna
     </div>
     <div class="col-md-6 mb-3">
       <label class="form-label">Schedule Adherence (20%)</label>
-      <input type="number" step="0.01" name="schedule_adherence" class="form-control" value="<?= $kpi['schedule_adherence'] ?>" required>
+      <input type="number" step="0.01" name="schedule_adherence" class="form-control"
+        value="<?= $kpi['schedule_adherence'] ?>" required>
     </div>
   </div>
 

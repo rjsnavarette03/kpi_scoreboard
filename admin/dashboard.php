@@ -29,8 +29,8 @@ $res = $conn->query($sql);
     </tr>
   </thead>
   <tbody>
-    <?php if($res && $res->num_rows>0): ?>
-      <?php while($r = $res->fetch_assoc()): ?>
+    <?php if ($res && $res->num_rows > 0): ?>
+      <?php while ($r = $res->fetch_assoc()): ?>
         <tr>
           <td><?= htmlspecialchars($r['username']) ?></td>
           <td><?= $r['productivity'] ?></td>
@@ -41,12 +41,15 @@ $res = $conn->query($sql);
           <td><span class="badge bg-secondary"><?= $r['grade'] ?></span></td>
           <td>
             <a href="add_kpi.php?edit=<?= $r['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-            <a href="delete_kpi.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this KPI?')">Delete</a>
+            <a href="delete_kpi.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-danger"
+              onclick="return confirm('Delete this KPI?')">Delete</a>
           </td>
         </tr>
       <?php endwhile; ?>
     <?php else: ?>
-      <tr><td colspan="8" class="text-center">No KPI records yet.</td></tr>
+      <tr>
+        <td colspan="8" class="text-center">No KPI records yet.</td>
+      </tr>
     <?php endif; ?>
   </tbody>
 </table>
