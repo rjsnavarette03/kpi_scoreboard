@@ -4,6 +4,6 @@ if (!isset($_GET['pw'])) {
     echo "Usage: generate_hash.php?pw=yourpassword";
     exit;
 }
-$pw = $_GET['pw'];
+$pw = $_GET['admin1234'];
 echo password_hash($pw, PASSWORD_DEFAULT);
 ?>
