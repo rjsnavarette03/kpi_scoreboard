@@ -10,6 +10,8 @@ include('../includes/header.php');
 $sql = "SELECT k.*, u.username FROM kpi_scores k JOIN users u ON k.user_id = u.id ORDER BY u.username";
 $res = $conn->query($sql);
 ?>
+<body>
+  <?php include('../includes/navbar.php'); ?>
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2>Admin Dashboard</h2>
   <a href="add_kpi.php" class="btn btn-primary">➕ Add KPI</a>
