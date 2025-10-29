@@ -63,6 +63,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $users = $conn->query("SELECT * FROM users WHERE role='employee'");
+if ($editing) {
+	// Show all employees if editing (to retain the one being edited)
+	$users = $conn->query("SELECT * FROM users WHERE role='employee'");
+} else {
+	// Show only employees who don't have a KPI yet
+	$users = $conn->query("
+		SELECT * FROM users 
+		WHERE role='employee' 
+		AND id NOT IN (SELECT user_id FROM kpi_scores)
+	");
+}
 ?>
 
 <body>
@@ -88,6 +99,11 @@ $users = $conn->query("SELECT * FROM users WHERE role='employee'");
 								</option>
 							<?php endwhile; ?>
 						</select>
+						<?php if ($users->num_rows == 0 && !$editing): ?>
+							<div class="alert alert-warning mt-3">
+								All employees already have KPI records assigned.
+							</div>
+						<?php endif; ?>
 					</div>
 
 					<div class="row">
