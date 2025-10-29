@@ -73,7 +73,9 @@
 	width: 1rem;
 	height: 1rem;
 }
-
+.min-100vh {
+	min-height: calc(100vh - 48px);
+}
 /*
  * Sidebar
  */
