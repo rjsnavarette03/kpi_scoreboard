@@ -43,8 +43,7 @@ if (isset($_POST['save'])) {
 }
 
 // Fetch users
-$result = $conn->query("SELECT * FROM users ORDER BY id DESC");
-// $result = $conn->query("SELECT * FROM users WHERE role = 'employee' ORDER BY id DESC");
+$result = $conn->query("SELECT * FROM users WHERE role = 'employee' ORDER BY id DESC");
 ?>
 
 <body>
