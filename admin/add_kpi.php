@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	// ✅ Compute total with weights
 	$total = ($prod * 0.4) + ($eff * 0.2) + ($qual * 0.2) + ($sched * 0.2);
+	$total = round($total, 2);
 
 	// ✅ Compute grade based on total
 	if ($total >= 100)
