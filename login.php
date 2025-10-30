@@ -38,26 +38,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include('includes/header.php');
 ?>
 
-<body class="d-flex align-items-center py-4 bg-body-tertiary">
+<body class="d-flex align-items-center py-4 bg-body-tertiary" style="justify-content: center;">
 	<?php if ($error): ?>
 		<div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
 	<?php endif; ?>
-	<main class="form-signin w-100 m-auto">
-		<form method="POST">
-			<img class="mb-4" src="assets/images/vvs-transparent-logo.png" alt="VVS Logo" />
-			<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-			<div class="form-floating">
-				<input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com" autocomplete="off" required />
-				<label for="floatingInput">Username</label>
-			</div>
-			<div class="form-floating">
-				<input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" autocomplete="off" required />
-				<label for="floatingPassword">Password</label>
-			</div>
-			<button class="btn btn-primary w-100 py-2" type="submit">
-				Sign in
-			</button>
-			<p class="mt-5 mb-3 text-body-secondary">Copyrights &copy; <?php echo date('Y'); ?></p>
+	<div class="my-container d-flex flex-column">
+		<img class="mb-4" src="assets/images/vvs-transparent-logo.png" alt="VVS Logo" />
+		<div class="heading">KPI Scoreboard</div>
+		<form method="POST" class="form">
+			<input required="" class="input" type="email" name="email" id="email" placeholder="E-mail" autocomplete="off" />
+			<input required="" class="input" type="password" name="password" id="password" placeholder="Password" autocomplete="off" />
+			<button class="login-button" type="submit">Sign in</button>
+
 		</form>
-	</main>
+		<span class="agreement"><a href="https://www.virtualventuresph.com/" target="_blank">Copyrights &copy; <?php echo date('Y'); ?></a></span>
+	</div>
 	<?php include('includes/footer.php'); ?>
