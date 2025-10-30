@@ -51,7 +51,7 @@ $result = $conn->query("SELECT * FROM users WHERE role = 'employee' ORDER BY id 
     <div class="container-fluid">
         <div class="row min-100vh">
             <?php include('../includes/sidebar.php'); ?>
-            <main class="col-md-9 ms-sm-auto col-lg-10 p-md-5">
+            <main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
                 <h2 class="mb-4">Manage Employees</h2>
 
                 <!-- Add/Edit Form -->

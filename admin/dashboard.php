@@ -16,7 +16,7 @@ $res = $conn->query($sql);
 	<div class="container-fluid">
 		<div class="row min-100vh">
 			<?php include('../includes/sidebar.php'); ?>
-			<main class="col-md-9 ms-sm-auto col-lg-10 p-md-5">
+			<main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
 				<div class="d-flex justify-content-between align-items-center mb-3">
 					<h2>Admin Dashboard</h2>
 					<a href="add_kpi.php" class="btn btn-primary">+ Add KPI</a>

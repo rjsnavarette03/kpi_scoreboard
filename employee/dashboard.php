@@ -17,26 +17,101 @@ $k = $res->fetch_assoc();
 	<div class="container-fluid">
 		<div class="row min-100vh">
 			<?php include('../includes/sidebar.php'); ?>
-			<main class="col-md-9 ms-sm-auto col-lg-10 p-md-5">
+			<main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
 				<h2 style="margin-bottom:2rem;">My KPI Dashboard</h2>
 
 				<?php if ($k): ?>
-					<div class="card shadow-sm mb-3">
-						<div class="card-body">
-							<h5 class="card-title"><?= htmlspecialchars($k['name']) ?></h5>
-							<div class="row">
-								<div class="col-md-6">
-									<p><strong>Productivity:</strong> <?= $k['productivity'] ?></p>
-									<p><strong>Efficiency:</strong> <?= $k['efficiency'] ?></p>
-								</div>
-								<div class="col-md-6">
-									<p><strong>Quality:</strong> <?= $k['quality'] ?></p>
-									<p><strong>Schedule Adherence:</strong> <?= $k['schedule_adherence'] ?></p>
+					<h5 class="card-title" style="margin-bottom:2rem;"><?= htmlspecialchars($k['name']) ?></h5>
+					<div class="row">
+						<!-- Productivity -->
+						<div class="col-xl-3 col-md-6 mb-4">
+							<div class="card border border-0 h-100 py-2 neumorph">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div class="fs-5.6 fw-bold text-uppercase mb-1">
+												Productivity</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">
+												<?= $k['productivity'] ?>&#37;
+											</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-chart-line fa-2x text-primary"></i>
+										</div>
+									</div>
 								</div>
 							</div>
-							<hr>
-							<p><strong>Total Score:</strong> <?= $k['total_score'] ?></p>
-							<p><strong>Performance Grade:</strong> <?= $k['grade'] ?></p>
+						</div>
+						<!-- Efficiency -->
+						<div class="col-xl-3 col-md-6 mb-4">
+							<div class="card border border-0 h-100 py-2 neumorph">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div class="fs-5.6 fw-bold text-uppercase mb-1">
+												Efficiency</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $k['efficiency'] ?>&#37;
+											</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-bolt fa-2x text-warning"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Quality -->
+						<div class="col-xl-3 col-md-6 mb-4">
+							<div class="card border border-0 h-100 py-2 neumorph">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div class="fs-5.6 fw-bold text-uppercase mb-1">
+												Quality</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $k['quality'] ?>&#37;
+											</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-star fa-2x text-success"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Schedule Adherence -->
+						<div class="col-xl-3 col-md-6 mb-4">
+							<div class="card border border-0 h-100 py-2 neumorph">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div class="fs-5.6 fw-bold text-uppercase mb-1">
+												Schedule Adherence</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">
+												<?= $k['schedule_adherence'] ?>&#37;
+											</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-calendar-check fa-2x text-danger"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<!-- Total Score -->
+						<div class="col-xl-6 col-md-6 mb-4">
+							<div class="custom-card">
+								<h2><?= $k['total_score'] ?>&#37;</h2>
+								<p>Total Score</p>
+							</div>
+						</div>
+						<!-- Performance Grade -->
+						<div class="col-xl-6 col-md-6 mb-4">
+							<div class="custom-card">
+								<h2><?= $k['grade'] ?></h2>
+								<p>Performance Grade</p>
+							</div>
 						</div>
 					</div>
 				<?php else: ?>

@@ -81,7 +81,7 @@ if ($editing) {
 	<div class="container-fluid">
 		<div class="row min-100vh">
 			<?php include('../includes/sidebar.php'); ?>
-			<main class="col-md-9 ms-sm-auto col-lg-10 p-md-5">
+			<main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
 				<h2 class="mb-4"><?= $editing ? "Edit KPI" : "Add KPI" ?></h2>
 
 				<form method="POST" class="card p-4 shadow-sm">

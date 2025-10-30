@@ -27,7 +27,7 @@
                         </li>
                     <?php endif; ?>
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-2" href="/logout.php">
+                        <a class="nav-link d-flex align-items-center gap-2 text-danger" href="/logout.php">
                             <i class="fa-solid fa-right-from-bracket"></i>Sign out
                         </a>
                     </li>
