@@ -109,8 +109,21 @@ $k = $res->fetch_assoc();
 						<!-- Performance Grade -->
 						<div class="col-xl-6 col-md-6 mb-4">
 							<div class="custom-card">
-								<h2><?= $k['grade'] ?></h2>
-								<p>Performance Grade</p>
+								<div class="row z-1 flex-row w-100">
+									<div class="col-xl-6 col-md-6 d-flex flex-column justify-content-center align-items-center">
+										<h2><?= $k['grade'] ?></h2>
+										<p>Performance Grade</p>
+									</div>
+									<div class="col-xl-6 col-md-6 d-flex flex-column border-start align-items-center">
+										<ul class="text-white mb-0 p-0" style="width:fit-content;list-style:none;">
+											<li><strong>EX</strong> - Exceptional</li>
+											<li><strong>EE</strong> - Exceeds Expectations</li>
+											<li><strong>ME</strong> - Meets Expectations</li>
+											<li><strong>NI</strong> - Needs Improvement</li>
+											<li><strong>UN</strong> - Unsatisfactory</li>
+										</ul>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
