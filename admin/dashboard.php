@@ -21,7 +21,7 @@ $res = $conn->query($sql);
 					<h2>Admin Dashboard</h2>
 					<a href="add_kpi.php" class="btn btn-primary">+ Add KPI</a>
 				</div>
-				<table class="table table-striped table-bordered table-hover">
+				<table class="table table-bordered table-hover">
 					<thead class="table-dark">
 						<tr>
 							<th>Employee</th>
@@ -39,11 +39,11 @@ $res = $conn->query($sql);
 							<?php while ($r = $res->fetch_assoc()): ?>
 								<tr>
 									<td><?= htmlspecialchars($r['name']) ?></td>
-									<td><?= $r['productivity'] ?></td>
-									<td><?= $r['efficiency'] ?></td>
-									<td><?= $r['quality'] ?></td>
-									<td><?= $r['schedule_adherence'] ?></td>
-									<td><?= $r['total_score'] ?></td>
+									<td><?= $r['productivity'] ?>%</td>
+									<td><?= $r['efficiency'] ?>%</td>
+									<td><?= $r['quality'] ?>%</td>
+									<td><?= $r['schedule_adherence'] ?>%</td>
+									<td class="table-active table-success"><?= $r['total_score'] ?>%</td>
 									<td><span class="badge bg-secondary"><?= $r['grade'] ?></span></td>
 									<td>
 										<a href="add_kpi.php?edit=<?= $r['id'] ?>" class="btn btn-sm btn-warning">Edit</a>

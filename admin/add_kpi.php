@@ -108,25 +108,22 @@ if ($editing) {
 					</div>
 
 					<div class="row">
-						<div class="col-md-6 mb-3">
+						<div class="col-md-3 mb-3">
 							<label class="form-label">Productivity (40%)</label>
 							<input type="number" step="0.01" name="productivity" class="form-control"
 								value="<?= $kpi['productivity'] ?>" required>
 						</div>
-						<div class="col-md-6 mb-3">
+						<div class="col-md-3 mb-3">
 							<label class="form-label">Efficiency (20%)</label>
 							<input type="number" step="0.01" name="efficiency" class="form-control"
 								value="<?= $kpi['efficiency'] ?>" required>
 						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6 mb-3">
+						<div class="col-md-3 mb-3">
 							<label class="form-label">Quality (20%)</label>
 							<input type="number" step="0.01" name="quality" class="form-control"
 								value="<?= $kpi['quality'] ?>" required>
 						</div>
-						<div class="col-md-6 mb-3">
+						<div class="col-md-3 mb-3">
 							<label class="form-label">Schedule Adherence (20%)</label>
 							<input type="number" step="0.01" name="schedule_adherence" class="form-control"
 								value="<?= $kpi['schedule_adherence'] ?>" required>

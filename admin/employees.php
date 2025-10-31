@@ -87,7 +87,7 @@ $result = $conn->query("SELECT * FROM users WHERE role = 'employee' ORDER BY id 
                 </div>
 
                 <!-- Employee Table -->
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
                             <th>ID</th>
