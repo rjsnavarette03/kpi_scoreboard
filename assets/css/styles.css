@@ -190,3 +190,7 @@
   background-image: linear-gradient(180deg, rgb(81, 255, 0), purple);
   animation: rotBGimg 3.5s linear infinite;
 } */
+.kpi_label {
+	font-size: 28px;
+	font-weight: 500;
+}
