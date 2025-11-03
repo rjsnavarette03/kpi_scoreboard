@@ -18,99 +18,159 @@ $k = $res->fetch_assoc();
 		<div class="row min-100vh">
 			<?php include('../includes/sidebar.php'); ?>
 			<main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
-				<h2 style="margin-bottom:2rem;">My KPI Dashboard</h2>
+				<h2 style="margin-bottom:2rem;"><?= htmlspecialchars($k['name']) ?></h2>
 
 				<?php if ($k): ?>
-					<h5 class="card-title" style="margin-bottom:2rem;"><?= htmlspecialchars($k['name']) ?></h5>
+					<!-- <h5 class="card-title" style="margin-bottom:2rem;"></h5> -->
 					<div class="row">
 						<!-- Productivity -->
-						<div class="col-xl-3 col-md-6 mb-4">
+						<div class="col-xl-4 col-md-6 mb-4">
 							<div class="card border border-0 h-100 py-2 neumorph">
 								<div class="card-body">
-									<div class="row no-gutters align-items-center">
+									<div class="row g-0 align-items-center">
 										<div class="col mr-2">
-											<div class="fs-5.6 fw-bold text-uppercase mb-1">
-												Productivity</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">
+											<div class="h1 mb-0 font-weight-bold text-gray-800">
 												<?= $k['productivity'] ?>&#37;
 											</div>
+											<div class="fw-bold text-uppercase mb-1">
+												Productivity</div>
 										</div>
-										<div class="col-auto">
+										<span class="col-auto" data-bs-toggle="tooltip" data-bs-placement="top"
+											data-bs-title="Test">
 											<i class="fas fa-chart-line fa-2x text-primary"></i>
-										</div>
+										</span>
 									</div>
+									<hr>
+									<p><?= $k['productivity_desc'] ?></p>
 								</div>
 							</div>
 						</div>
 						<!-- Efficiency -->
-						<div class="col-xl-3 col-md-6 mb-4">
+						<div class="col-xl-4 col-md-6 mb-4">
 							<div class="card border border-0 h-100 py-2 neumorph">
 								<div class="card-body">
-									<div class="row no-gutters align-items-center">
+									<div class="row g-0 align-items-center">
 										<div class="col mr-2">
-											<div class="fs-5.6 fw-bold text-uppercase mb-1">
-												Efficiency</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $k['efficiency'] ?>&#37;
+											<div class="h1 mb-0 font-weight-bold text-gray-800"><?= $k['efficiency'] ?>&#37;
 											</div>
+											<div class="fw-bold text-uppercase mb-1">
+												Efficiency</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-bolt fa-2x text-warning"></i>
 										</div>
 									</div>
+									<hr>
+									<p><?= $k['efficiency_desc'] ?></p>
 								</div>
 							</div>
 						</div>
 						<!-- Quality -->
-						<div class="col-xl-3 col-md-6 mb-4">
+						<div class="col-xl-4 col-md-6 mb-4">
 							<div class="card border border-0 h-100 py-2 neumorph">
 								<div class="card-body">
-									<div class="row no-gutters align-items-center">
+									<div class="row g-0 align-items-center">
 										<div class="col mr-2">
-											<div class="fs-5.6 fw-bold text-uppercase mb-1">
-												Quality</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $k['quality'] ?>&#37;
+											<div class="h1 mb-0 font-weight-bold text-gray-800"><?= $k['quality'] ?>&#37;
 											</div>
+											<div class="fw-bold text-uppercase mb-1">
+												Quality</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-star fa-2x text-success"></i>
 										</div>
 									</div>
+									<hr>
+									<p><?= $k['quality_desc'] ?></p>
 								</div>
 							</div>
 						</div>
 						<!-- Schedule Adherence -->
-						<div class="col-xl-3 col-md-6 mb-4">
+						<div class="col-xl-8 col-md-6 mb-4">
 							<div class="card border border-0 h-100 py-2 neumorph">
 								<div class="card-body">
-									<div class="row no-gutters align-items-center">
+									<div class="row g-0 align-items-center">
 										<div class="col mr-2">
-											<div class="fs-5.6 fw-bold text-uppercase mb-1">
-												Schedule Adherence</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">
+											<div class="h1 mb-0 font-weight-bold text-gray-800">
 												<?= $k['schedule_adherence'] ?>&#37;
 											</div>
+											<div class="fw-bold text-uppercase mb-1">
+												Schedule Adherence</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-calendar-check fa-2x text-danger"></i>
 										</div>
 									</div>
+									<hr>
+									<div class="row">
+										<!-- Attendance -->
+										<div class="col-xl-4 col-md-12 mb-4">
+											<div class="card border border-0 h-100 bg-transparent">
+												<div class="card-body border border-dark-subtle rounded-2">
+													<div class="row g-0 align-items-center">
+														<div class="col">
+															<div class="fw-bold mb-1">
+																Attendance - <?= $k['attendance'] ?>&#37;
+															</div>
+															<em class="m-0"><?= $k['attendance_desc'] ?>&#37;</em>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- Tardiness -->
+										<div class="col-xl-4 col-md-12 mb-4">
+											<div class="card border border-0 h-100 bg-transparent">
+												<div class="card-body border border-dark-subtle rounded-2">
+													<div class="row g-0 align-items-center">
+														<div class="col">
+															<div class="fw-bold mb-1">
+																Tardiness - <?= $k['tardiness'] ?>&#37;
+															</div>
+															<em class="m-0"><?= $k['tardiness_desc'] ?>&#37;</em>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- Undertime -->
+										<div class="col-xl-4 col-md-12 mb-4">
+											<div class="card border border-0 h-100 bg-transparent">
+												<div class="card-body border border-dark-subtle rounded-2">
+													<div class="row g-0 align-items-center">
+														<div class="col">
+															<div class="fw-bold mb-1">
+																Undertime - <?= $k['undertime'] ?>&#37;
+															</div>
+															<em class="m-0"><?= $k['undertime_desc'] ?>&#37;</em>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Total Score -->
+						<div class="col-xl-4 col-md-6 mb-4">
+							<div class="card border border-0 h-100 py-2 gradient-bg">
+								<div class="card-body d-flex align-items-center justify-content-center flex-column">
+									<div class="card-title mb-0 font-weight-bold text-white"><?= $k['total_score'] ?>&#37;
+									</div>
+									<div class="fw-bold text-uppercase mb-0 text-white">
+										Total Score</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<!-- Total Score -->
-						<div class="col-xl-6 col-md-6 mb-4">
-							<div class="custom-card">
-								<h2><?= $k['total_score'] ?>&#37;</h2>
-								<p>Total Score</p>
-							</div>
-						</div>
 						<!-- Performance Grade -->
-						<div class="col-xl-6 col-md-6 mb-4">
+						<div class="col-xl-12 col-md-12 mb-4">
 							<div class="custom-card">
 								<div class="row z-1 flex-row w-100">
-									<div class="col-xl-6 col-md-6 d-flex flex-column justify-content-center align-items-center">
+									<div
+										class="col-xl-6 col-md-6 d-flex flex-column justify-content-center align-items-center">
 										<h2><?= $k['grade'] ?></h2>
 										<p>Performance Grade</p>
 									</div>
