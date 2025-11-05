@@ -187,3 +187,7 @@
 	font-size: 4em;
 	font-weight: 700;
 }
+.table-transparent td {
+	background-color: transparent !important;
+	padding: .1rem .5rem;
+}
