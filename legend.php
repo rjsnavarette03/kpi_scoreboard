@@ -60,7 +60,7 @@ include('includes/header.php');
                 <div class="row">
                     <div class="col-xl-4 col-md-12 mb-4">
                         <h3>Productivity</h3>
-                        <table class="table">
+                        <table class="table table-bordered border-success">
                             <thead class="table-success">
                                 <tr>
                                     <th>Metric</th>
@@ -93,7 +93,7 @@ include('includes/header.php');
                     </div>
                     <div class="col-xl-4 col-md-12 mb-4">
                         <h3>Efficiency</h3>
-                        <table class="table">
+                        <table class="table table-bordered border-danger">
                             <thead class="table-danger">
                                 <tr>
                                     <th>Metric</th>
@@ -126,7 +126,7 @@ include('includes/header.php');
                     </div>
                     <div class="col-xl-4 col-md-12 mb-4">
                         <h3>Quality</h3>
-                        <table class="table">
+                        <table class="table table-bordered border-warning">
                             <thead class="table-warning">
                                 <tr>
                                     <th>Metric</th>
@@ -161,7 +161,7 @@ include('includes/header.php');
                         <h3>Schedule Adherence</h3>
                         <div class="row">
                             <div class="col-xl-4 col-md-4 mb-4">
-                                <table class="table">
+                                <table class="table table-bordered border-info">
                                     <thead class="table-info">
                                         <tr>
                                             <th>Attendance</th>
@@ -185,7 +185,7 @@ include('includes/header.php');
                                 </table>
                             </div>
                             <div class="col-xl-4 col-md-4 mb-4">
-                                <table class="table">
+                                <table class="table table-bordered border-info">
                                     <thead class="table-info">
                                         <tr>
                                             <th>Tardiness</th>
@@ -213,7 +213,7 @@ include('includes/header.php');
                                 </table>
                             </div>
                             <div class="col-xl-4 col-md-4 mb-4">
-                                <table class="table">
+                                <table class="table table-bordered border-info">
                                     <thead class="table-info">
                                         <tr>
                                             <th>Undertime</th>
