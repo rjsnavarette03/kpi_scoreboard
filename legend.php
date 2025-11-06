@@ -16,60 +16,54 @@ include('includes/header.php');
             <main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
                 <h2 class="mb-4">KPI Weight Distribution Table</h2>
                 <div class="row">
-                    <div class="col-xl-6 col-md-6 mb-4">
-                        <table class="table">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <table class="table table-hover">
                             <thead class="table-dark">
                                 <tr>
                                     <th>KPI</th>
+                                    <th>Definitions</th>
                                     <th>Percentage</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Productivity</td>
+                                    <td>Total productive minutes logged per day/week/month</td>
                                     <td>40%</td>
                                 </tr>
                                 <tr>
                                     <td>Efficiency</td>
+                                    <td>Consistency in meeting weekly productivity targets, Timely patient touch base and Completion of documentation within expected timeframes</td>
                                     <td>20%</td>
                                 </tr>
                                 <tr>
                                     <td>Quality</td>
+                                    <td>Accuracy of work, Level of client/patient engagement and satisfaction</td>
                                     <td>20%</td>
                                 </tr>
                                 <tr>
                                     <td>Schedule Adherence</td>
+                                    <td>Overall schedule adherence rate</td>
                                     <td>20%</td>
                                 </tr>
                             </tbody>
                             <tfoot class="table-primary fw-bold">
                                 <tr>
                                     <td>Total</td>
+                                    <td></td>
                                     <td>100%</td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
-                    <div class="col-xl-6 col-md-6 mb-4">
-                        <h3>KPI Definitions:</h3>
-                        <ul>
-                            <li class="fs-5 mb-3"><strong>Productivity:</strong> Total productive minutes logged per
-                                day/week/month</li>
-                            <li class="fs-5 mb-3"><strong>Efficiency:</strong> Consistency in meeting weekly
-                                productivity targets, Timely patient touch base and Completion of documentation within
-                                expected timeframes</li>
-                            <li class="fs-5 mb-3"><strong>Quality:</strong> Accuracy of work, Level of client/patient
-                                engagement and satisfaction</li>
-                            <li class="fs-5"><strong>Schedule Adherence:</strong> Overall schedule adherence rate</li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-4 col-md-12 mb-4">
+                        <h3>Productivity</h3>
                         <table class="table">
                             <thead class="table-success">
                                 <tr>
-                                    <th>Productivity</th>
+                                    <th>Metric</th>
                                     <th>Scoring</th>
                                 </tr>
                             </thead>
@@ -98,10 +92,11 @@ include('includes/header.php');
                         </table>
                     </div>
                     <div class="col-xl-4 col-md-12 mb-4">
+                        <h3>Efficiency</h3>
                         <table class="table">
                             <thead class="table-danger">
                                 <tr>
-                                    <th>Efficiency</th>
+                                    <th>Metric</th>
                                     <th>Scoring</th>
                                 </tr>
                             </thead>
@@ -130,10 +125,11 @@ include('includes/header.php');
                         </table>
                     </div>
                     <div class="col-xl-4 col-md-12 mb-4">
+                        <h3>Quality</h3>
                         <table class="table">
                             <thead class="table-warning">
                                 <tr>
-                                    <th>Quality</th>
+                                    <th>Metric</th>
                                     <th>Scoring</th>
                                 </tr>
                             </thead>
