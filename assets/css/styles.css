@@ -99,10 +99,7 @@
 .sidebar-heading {
 	font-size: 0.75rem;
 }
-/*
- * Navbar
- */
-
+/* Navbar */
 .navbar-brand {
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
@@ -190,4 +187,8 @@
 .table-transparent td {
 	background-color: transparent !important;
 	padding: .1rem .5rem;
+}
+.rating-title {
+	font-size: 52px;
+	font-weight: 700;
 }

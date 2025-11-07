@@ -14,7 +14,7 @@ include('includes/header.php');
         <div class="row min-100vh">
             <?php include('includes/sidebar.php'); ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
-                <h2 class="mb-4">KPI Weight Distribution Table</h2>
+                <h2 class="mb-4 fw-bolder">KPI Weight Distribution Table</h2>
                 <div class="row">
                     <div class="col-xl-12 col-md-12 mb-4">
                         <table class="table table-hover">
@@ -57,9 +57,9 @@ include('includes/header.php');
                         </table>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-5">
                     <div class="col-xl-4 col-md-12 mb-4">
-                        <h3>Productivity</h3>
+                        <h3 class="fst-italic h4">Productivity</h3>
                         <table class="table table-bordered border-success">
                             <thead class="table-success">
                                 <tr>
@@ -92,7 +92,7 @@ include('includes/header.php');
                         </table>
                     </div>
                     <div class="col-xl-4 col-md-12 mb-4">
-                        <h3>Efficiency</h3>
+                        <h3 class="fst-italic h4">Efficiency</h3>
                         <table class="table table-bordered border-danger">
                             <thead class="table-danger">
                                 <tr>
@@ -125,7 +125,7 @@ include('includes/header.php');
                         </table>
                     </div>
                     <div class="col-xl-4 col-md-12 mb-4">
-                        <h3>Quality</h3>
+                        <h3 class="fst-italic h4">Quality</h3>
                         <table class="table table-bordered border-warning">
                             <thead class="table-warning">
                                 <tr>
@@ -158,7 +158,7 @@ include('includes/header.php');
                         </table>
                     </div>
                     <div class="col-xl-12 col-md-12 mb-4">
-                        <h3>Schedule Adherence</h3>
+                        <h3 class="fst-italic h4">Schedule Adherence</h3>
                         <div class="row">
                             <div class="col-xl-4 col-md-4 mb-4">
                                 <table class="table table-bordered border-info">
@@ -235,6 +235,39 @@ include('includes/header.php');
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mt-5">
+                    <div class="col-xl-12 col-md-12">
+                        <h2 class="mb-4 fw-bolder">Performance Rating Guide</h3>
+                        <div class="row d-flex flex-row justify-content-between g-0">
+                            <div class="col-xl-2 bg-dark rounded d-flex flex-column justify-content-center align-items-center p-5">
+                                <p class="rating-title text-white mb-3">EX</p>
+                                <h4 class="rating-score text-white h3">100</h4>
+                                <p class="rating-description text-white mb-0">Exceptional</p>
+                            </div>
+                            <div class="col-xl-2 bg-dark rounded d-flex flex-column justify-content-center align-items-center p-5">
+                                <p class="rating-title text-white mb-3">EE</p>
+                                <h4 class="rating-score text-white h3">95 - 99.99</h4>
+                                <p class="rating-description text-white mb-0">Exceeds Expectations</p>
+                            </div>
+                            <div class="col-xl-2 bg-dark rounded d-flex flex-column justify-content-center align-items-center p-5">
+                                <p class="rating-title text-white mb-3">ME</p>
+                                <h4 class="rating-score text-white h3">90 - 94.99</h4>
+                                <p class="rating-description text-white mb-0">Meets Expectations</p>
+                            </div>
+                            <div class="col-xl-2 bg-dark rounded d-flex flex-column justify-content-center align-items-center p-5">
+                                <p class="rating-title text-white mb-3">NI</p>
+                                <h4 class="rating-score text-white h3">85 - 89.99</h4>
+                                <p class="rating-description text-white mb-0">Needs Improvement</p>
+                            </div>
+                            <div class="col-xl-2 bg-dark rounded d-flex flex-column justify-content-center align-items-center p-5">
+                                <p class="rating-title text-white mb-3">UN</p>
+                                <h4 class="rating-score text-white h3">&lt; 85</h4>
+                                <p class="rating-description text-white mb-0">Unsatisfactory</p>
                             </div>
                         </div>
                     </div>
