@@ -13,12 +13,24 @@ CREATE TABLE IF NOT EXISTS kpi_scores (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
   productivity FLOAT DEFAULT 0,
+  productivity_desc TEXT,
   efficiency FLOAT DEFAULT 0,
+  efficiency_desc TEXT,
   quality FLOAT DEFAULT 0,
+  quality_desc TEXT,
+  attendance FLOAT DEFAULT 0,
+  attendance_desc TEXT,
+  tardiness FLOAT DEFAULT 0,
+  tardiness_desc TEXT,
+  undertime FLOAT DEFAULT 0,
+  undertime_desc TEXT,
   schedule_adherence FLOAT DEFAULT 0,
   total_score FLOAT DEFAULT 0,
   grade VARCHAR(5),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  month DATE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  -- prevent duplicate KPI per user+month
+  UNIQUE KEY uq_user_month (user_id, month)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Sample users (passwords not set). Use generate_hash.php to create password hashes and INSERT into users table.
