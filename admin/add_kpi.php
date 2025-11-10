@@ -8,6 +8,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 include('../config/db.php');
 include('../includes/header.php');
 
+// Error/modal helpers
+$error_message = '';
+$show_modal = false;
+$has_error = false;
+
 /**
  * Load <option> items for a KPI category (safe/escaped).
  */
@@ -46,6 +51,7 @@ $editing = false;
 $kpi = [
 	'id' => '',
 	'user_id' => '',
+	'month' => '',
 	'productivity' => '',
 	'efficiency' => '',
 	'quality' => '',
@@ -70,6 +76,18 @@ if (isset($_GET['edit'])) {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 	$id = isset($_POST['id']) ? (int) $_POST['id'] : null;
 	$user_id = (int) $_POST['user_id'];
+	// month input comes as YYYY-MM from <input type="month">; store as DATE YYYY-MM-01
+	$month_input = isset($_POST['month']) ? trim($_POST['month']) : '';
+	$month = '';
+	if ($month_input !== '' && preg_match('/^\d{4}-\d{2}$/', $month_input)) {
+		$month = $month_input . '-01';
+	} elseif ($month_input !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $month_input)) {
+		// hidden field may submit a full DATE (YYYY-MM-DD) when editing — accept that
+		$month = $month_input;
+	} elseif ($editing && empty($month) && !empty($kpi['month'])) {
+		// fallback: if editing and month wasn't in POST (disabled input), keep existing month from DB
+		$month = $kpi['month'];
+	}
 	$prod = (float) $_POST['productivity'];
 	$eff = (float) $_POST['efficiency'];
 	$qual = (float) $_POST['quality'];
@@ -87,19 +105,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 	$undertime_desc = getDesc($conn, $undertime, 'Undertime');
 
 	// Ensure all lookups succeeded
-	foreach ([
-		'Productivity' => $productivity_desc,
-		'Efficiency' => $efficiency_desc,
-		'Quality' => $quality_desc,
-		'Attendance' => $attendance_desc,
-		'Tardiness' => $tardiness_desc,
-		'Undertime' => $undertime_desc,
-	] as $cat => $desc) {
-		if ($desc === null) {
-			echo "<div class='alert alert-danger'>Invalid score selection for {$cat}. Please reselect.</div>";
-			include('../includes/footer.php');
-			exit;
-		}
+	foreach (
+		[
+			'Productivity' => $productivity_desc,
+			'Efficiency' => $efficiency_desc,
+			'Quality' => $quality_desc,
+			'Attendance' => $attendance_desc,
+			'Tardiness' => $tardiness_desc,
+			'Undertime' => $undertime_desc,
+		] as $cat => $desc
+	) {
+			if ($desc === null) {
+				$error_message = "Invalid score selection for {$cat}. Please reselect.";
+				$show_modal = true;
+				$has_error = true;
+				break;
+			}
 	}
 
 	// Weighted computation
@@ -121,8 +142,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 		$grade = 'UN';
 	}
 
+	// Prevent duplicate KPI entries for same user+month
+	if ($month !== '') {
+		if ($id) {
+			// exclude current record id when editing
+			$chk = $conn->prepare("SELECT id FROM kpi_scores WHERE user_id = ? AND month = ? AND id <> ? LIMIT 1");
+			$chk->bind_param('isi', $user_id, $month, $id);
+		} else {
+			$chk = $conn->prepare("SELECT id FROM kpi_scores WHERE user_id = ? AND month = ? LIMIT 1");
+			$chk->bind_param('is', $user_id, $month);
+		}
+		$chk->execute();
+		$chkRes = $chk->get_result();
+		if ($chkRes && $chkRes->num_rows > 0) {
+			$error_message = 'This user already has a KPI for the selected month. Please choose another month or edit the existing record.';
+			$show_modal = true;
+			$has_error = true;
+		}
+		$chk->close();
+	}
+
 	// INSERT/UPDATE (prepared)
-	if ($id) {
+	if (!$has_error) {
+		if ($id) {
 		$sql = "UPDATE kpi_scores SET 
             productivity = ?, productivity_desc = ?,
             efficiency   = ?, efficiency_desc   = ?,
@@ -131,10 +173,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             tardiness    = ?, tardiness_desc    = ?,
             undertime    = ?, undertime_desc    = ?,
             total_score  = ?, grade             = ?,
-			schedule_adherence = ? WHERE id = ?";
+			schedule_adherence = ?, month = ? WHERE id = ?";
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param(
-			'dsdsdsdsdsdsdsdi',
+			'dsdsdsdsdsdsdsdsi',
 			$prod,
 			$productivity_desc,
 			$eff,
@@ -150,17 +192,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			$total,
 			$grade,
 			$schedule_total,
+			$month,
 			$id
 		);
-	} else {
+		} else {
 		$sql = "INSERT INTO kpi_scores 
-            (user_id, productivity, productivity_desc, efficiency, efficiency_desc, quality, quality_desc,
-             attendance, attendance_desc, tardiness, tardiness_desc, undertime, undertime_desc, total_score, grade, schedule_adherence)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			(user_id, productivity, productivity_desc, efficiency, efficiency_desc, quality, quality_desc,
+			 attendance, attendance_desc, tardiness, tardiness_desc, undertime, undertime_desc, total_score, grade, month, schedule_adherence)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$stmt = $conn->prepare($sql);
-		// types: i d s d s d s d s d s d s d s
+		// types: i d s d s d s d s d s d s d s s d
 		$stmt->bind_param(
-			'idsdsdsdsdsdsdsd',
+			'idsdsdsdsdsdsdssd',
 			$user_id,
 			$prod,
 			$productivity_desc,
@@ -176,31 +219,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			$undertime_desc,
 			$total,
 			$grade,
+			$month,
 			$schedule_total
 		);
-	}
+		}
+	} // end if not has_error
 
-	if ($stmt->execute()) {
-		$stmt->close();
-		header("Location: dashboard.php");
-		exit;
-	} else {
-		$err = htmlspecialchars($stmt->error, ENT_QUOTES, 'UTF-8');
-		$stmt->close();
-		echo "<div class='alert alert-danger'>Error: {$err}</div>";
+	// Only attempt to execute when there was no validation error and a statement was prepared
+	if (!$has_error) {
+		if (isset($stmt) && $stmt && $stmt->execute()) {
+			$stmt->close();
+			header("Location: dashboard.php");
+			exit;
+		} else {
+			$err = isset($stmt) && $stmt ? htmlspecialchars($stmt->error, ENT_QUOTES, 'UTF-8') : 'No statement to execute.';
+			if (isset($stmt) && $stmt) {
+				$stmt->close();
+			}
+			echo "<div class='alert alert-danger'>Error: {$err}</div>";
+		}
 	}
 }
 
-// Employee dropdown logic
-if ($editing) {
-	$users = $conn->query("SELECT * FROM users WHERE role='employee'");
-} else {
-	$users = $conn->query("
-        SELECT * FROM users 
-        WHERE role='employee' 
-        AND id NOT IN (SELECT user_id FROM kpi_scores)
-    ");
-}
+// Employee dropdown logic: show all employees so admin can add KPI for different months
+$users = $conn->query("SELECT * FROM users WHERE role='employee'");
 ?>
 
 <body>
@@ -216,24 +258,36 @@ if ($editing) {
 						<input type="hidden" name="id" value="<?= (int) $kpi['id'] ?>">
 					<?php endif; ?>
 
-					<div class="mb-3">
-						<label class="form-label">Employee Name</label>
-						<select name="user_id" class="form-select" <?= $editing ? 'disabled' : '' ?> required>
-							<option value="">Select Employee</option>
-							<?php while ($u = $users->fetch_assoc()): ?>
-								<option value="<?= (int) $u['id'] ?>" <?= ($u['id'] == $kpi['user_id']) ? 'selected' : '' ?>>
-									<?= htmlspecialchars((string) $u['name'], ENT_QUOTES, 'UTF-8') ?>
-								</option>
-							<?php endwhile; ?>
-						</select>
-						<?php if ($editing): ?>
-							<input type="hidden" name="user_id" value="<?= (int) $kpi['user_id'] ?>">
-						<?php endif; ?>
-						<?php if ($users->num_rows == 0 && !$editing): ?>
-							<div class="alert alert-warning mt-3">
-								All employees already have KPI records assigned.
-							</div>
-						<?php endif; ?>
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label">Employee Name</label>
+							<select name="user_id" class="form-select" <?= $editing ? 'disabled' : '' ?> required>
+								<option value="">Select Employee</option>
+								<?php while ($u = $users->fetch_assoc()): ?>
+									<option value="<?= (int) $u['id'] ?>" <?= ($u['id'] == $kpi['user_id']) ? 'selected' : '' ?>>
+										<?= htmlspecialchars((string) $u['name'], ENT_QUOTES, 'UTF-8') ?>
+									</option>
+								<?php endwhile; ?>
+							</select>
+							<?php if ($editing): ?>
+								<input type="hidden" name="user_id" value="<?= (int) $kpi['user_id'] ?>">
+							<?php endif; ?>
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label">Month</label>
+							<input type="month" name="month" class="form-control" <?= $editing ? 'disabled' : '' ?> required value="<?= isset($kpi['month']) && $kpi['month'] !== '' ? htmlspecialchars(substr($kpi['month'], 0, 7), ENT_QUOTES, 'UTF-8') : '' ?>">
+							<?php if ($editing && isset($kpi['month']) && $kpi['month'] !== ''): ?>
+								<!-- disabled inputs are not submitted; include hidden field so month value is posted when editing -->
+								<input type="hidden" name="month" value="<?= htmlspecialchars(substr($kpi['month'], 0, 10), ENT_QUOTES, 'UTF-8') ?>">
+							<?php endif; ?>
+						</div>
+						<div class="col-md-12 mb-3">
+							<?php if ($users->num_rows == 0 && !$editing): ?>
+								<div class="alert alert-warning mt-3">
+									All employees already have KPI records assigned.
+								</div>
+							<?php endif; ?>
+						</div>
 					</div>
 
 					<div class="row">
@@ -290,6 +344,33 @@ if ($editing) {
 						<a href="dashboard.php" class="btn btn-danger">Cancel</a>
 					</div>
 				</form>
+
+				<?php if ($show_modal): ?>
+				<!-- Modal -->
+				<div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+				  <div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title">Error</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					  </div>
+					  <div class="modal-body">
+						<p><?= htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8') ?></p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+
+				<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					var m = new bootstrap.Modal(document.getElementById('errorModal'));
+					m.show();
+				});
+				</script>
+				<?php endif; ?>
 			</main>
 		</div>
 	</div>

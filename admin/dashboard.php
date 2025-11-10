@@ -7,7 +7,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
 include('../config/db.php');
 include('../includes/header.php');
 
-$sql = "SELECT k.*, u.name FROM kpi_scores k JOIN users u ON k.user_id = u.id ORDER BY u.username";
+$selected_month = isset($_GET['month']) ? trim($_GET['month']) : date('Y-m');
+// validate YYYY-MM
+if (!preg_match('/^\d{4}-\d{2}$/', $selected_month)) {
+	$selected_month = date('Y-m');
+}
+$selected_month_date = $selected_month . '-01';
+
+$sql = "SELECT k.*, u.name FROM kpi_scores k JOIN users u ON k.user_id = u.id WHERE k.month = '" . $conn->real_escape_string($selected_month_date) . "' ORDER BY u.username";
 $res = $conn->query($sql);
 ?>
 
@@ -19,12 +26,19 @@ $res = $conn->query($sql);
 			<main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
 				<div class="d-flex justify-content-between align-items-center mb-3">
 					<h2>Admin Dashboard</h2>
-					<a href="add_kpi.php" class="btn btn-primary">+ Add KPI</a>
+					<div class="d-flex gap-2">
+						<form class="d-flex" method="GET">
+							<input type="month" name="month" class="form-control me-2" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>">
+							<button class="btn btn-secondary" type="submit">Filter</button>
+						</form>
+						<a href="add_kpi.php" class="btn btn-primary">+ Add KPI</a>
+					</div>
 				</div>
 				<table class="table table-bordered table-hover">
 					<thead class="table-dark">
 						<tr>
 							<th>Employee</th>
+							<th>Month</th>
 							<th>Productivity</th>
 							<th>Efficiency</th>
 							<th>Quality</th>
@@ -39,6 +53,7 @@ $res = $conn->query($sql);
 							<?php while ($r = $res->fetch_assoc()): ?>
 								<tr>
 									<td><?= htmlspecialchars($r['name']) ?></td>
+									<td><?= htmlspecialchars(date('F Y', strtotime($r['month']))) ?></td>
 									<td><?= $r['productivity'] ?>%</td>
 									<td><?= $r['efficiency'] ?>%</td>
 									<td><?= $r['quality'] ?>%</td>
