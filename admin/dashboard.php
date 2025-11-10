@@ -69,7 +69,7 @@ $res = $conn->query($sql);
 							<?php endwhile; ?>
 						<?php else: ?>
 							<tr>
-								<td colspan="8" class="text-center">No KPI records yet.</td>
+								<td colspan="9" class="text-center">No KPI records yet.</td>
 							</tr>
 						<?php endif; ?>
 					</tbody>
