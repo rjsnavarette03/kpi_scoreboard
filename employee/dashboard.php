@@ -234,7 +234,7 @@ if ($uStmt) {
                         </div>
                     </div>
                 <?php else: ?>
-                    <div class="alert alert-info">No KPI data found for you for <?= htmlspecialchars(date('F Y', strtotime($selected_month_date)), ENT_QUOTES, 'UTF-8') ?>. Please contact HR.</div>
+                    <div class="alert alert-info">No KPI data found for you for <?= htmlspecialchars(date('F Y', strtotime($selected_month_date)), ENT_QUOTES, 'UTF-8') ?>.</div>
                 <?php endif; ?>
             </main>
         </div>
