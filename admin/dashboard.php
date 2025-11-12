@@ -29,7 +29,7 @@ $res = $conn->query($sql);
 					<div class="d-flex gap-2">
 						<form class="d-flex" method="GET">
 							<input type="month" name="month" class="form-control me-2" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>">
-							<button class="btn btn-secondary" type="submit">Filter</button>
+							<!-- <button class="btn btn-secondary" type="submit">Filter</button> -->
 						</form>
 						<a href="add_kpi.php" class="btn btn-primary">+ Add KPI</a>
 					</div>
@@ -77,4 +77,18 @@ $res = $conn->query($sql);
 			</main>
 		</div>
 	</div>
+
+	<!-- Auto-submit month filter when the user changes the month input -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var monthInput = document.querySelector('input[type="month"][name="month"]');
+			if (monthInput && monthInput.form) {
+				monthInput.addEventListener('change', function() {
+					// Submit the parent form (GET) to update the dashboard preview
+					monthInput.form.submit();
+				});
+			}
+		});
+	</script>
+
 	<?php include('../includes/footer.php'); ?>

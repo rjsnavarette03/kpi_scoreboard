@@ -47,8 +47,8 @@ if ($uStmt) {
                 <div class="d-flex justify-content-between align-items-center mb-5">
                     <h2 style="margin-bottom:0;"><?= htmlspecialchars($user_name ?: ($k['name'] ?? '')) ?></h2>
                     <form method="GET" class="d-flex">
-                        <input type="month" name="month" class="form-control me-2" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>">
-                        <button class="btn btn-primary" type="submit">Filter</button>
+                        <input type="month" name="month" class="form-control" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>">
+                        <!-- <button class="btn btn-primary" type="submit">Filter</button> -->
                     </form>
                 </div>
 
@@ -239,5 +239,18 @@ if ($uStmt) {
             </main>
         </div>
     </div>
+
+    <!-- Auto-submit month filter when the user changes the month input -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var monthInput = document.querySelector('input[type="month"][name="month"]');
+            if (monthInput && monthInput.form) {
+                monthInput.addEventListener('change', function() {
+                    // Submit the parent form (GET) to update the dashboard preview
+                    monthInput.form.submit();
+                });
+            }
+        });
+    </script>
 
     <?php include('../includes/footer.php'); ?>
