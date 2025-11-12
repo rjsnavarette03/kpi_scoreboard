@@ -240,17 +240,60 @@ if ($uStmt) {
         </div>
     </div>
 
-    <!-- Auto-submit month filter when the user changes the month input -->
+    <!-- Loading overlay (hidden by default) -->
+    <div id="loading-overlay" class="d-none position-fixed top-0 start-0 w-100 h-100" style="background: rgba(0,0,0,0.5); z-index: 9999;">
+        <div class="d-flex h-100 align-items-center justify-content-center">
+            <div class="text-center text-white">
+                <div class="spinner-border text-light" role="status"><span class="visually-hidden">Loading...</span></div>
+                <div class="mt-2">Loading…</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto-submit month filter and show overlay when submitting -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var monthInput = document.querySelector('input[type="month"][name="month"]');
-            if (monthInput && monthInput.form) {
-                monthInput.addEventListener('change', function() {
-                    // Submit the parent form (GET) to update the dashboard preview
-                    monthInput.form.submit();
-                });
-            }
-        });
+        (function() {
+            document.addEventListener('DOMContentLoaded', function() {
+                var monthInput = document.querySelector('input[type="month"][name="month"]');
+                var overlay = document.getElementById('loading-overlay');
+
+                function showOverlay() {
+                    if (!overlay) return;
+                    overlay.classList.remove('d-none');
+                    // Force repaint so overlay appears before navigation
+                    overlay.offsetHeight;
+                }
+
+                if (monthInput && monthInput.form) {
+                    var form = monthInput.form;
+                    // Prevent double submits
+                    form.__submitting = false;
+
+                    form.addEventListener('submit', function(e) {
+                        if (form.__submitting) {
+                            // already submitting, block
+                            e.preventDefault();
+                            return;
+                        }
+                        form.__submitting = true;
+                        showOverlay();
+                    });
+
+                    monthInput.addEventListener('change', function() {
+                        // Show overlay, then submit. Small timeout helps ensure overlay renders.
+                        showOverlay();
+                        setTimeout(function() {
+                            // Use requestSubmit if available to ensure HTML5 validation runs
+                            if (typeof form.requestSubmit === 'function') {
+                                form.requestSubmit();
+                            } else {
+                                form.submit();
+                            }
+                        }, 50);
+                    });
+                }
+            });
+        })();
     </script>
 
     <?php include('../includes/footer.php'); ?>
