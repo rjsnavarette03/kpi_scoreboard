@@ -50,7 +50,7 @@ include('../includes/body-intro.php');
 			<div class="row">
 				<div class="col-xl-12">
 					<div class="card">
-						<div class="card-body">
+						<div class="card-body p-4">
 							<div class="d-flex justify-content-end">
 								<a href="add_kpi.php" class="btn btn-sm btn-primary mb-4">+ Add KPI</a>
 							</div>

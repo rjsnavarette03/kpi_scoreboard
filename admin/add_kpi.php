@@ -115,12 +115,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			'Undertime' => $undertime_desc,
 		] as $cat => $desc
 	) {
-			if ($desc === null) {
-				$error_message = "Invalid score selection for {$cat}. Please reselect.";
-				$show_modal = true;
-				$has_error = true;
-				break;
-			}
+		if ($desc === null) {
+			$error_message = "Invalid score selection for {$cat}. Please reselect.";
+			$show_modal = true;
+			$has_error = true;
+			break;
+		}
 	}
 
 	// Weighted computation
@@ -165,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 	// INSERT/UPDATE (prepared)
 	if (!$has_error) {
 		if ($id) {
-		$sql = "UPDATE kpi_scores SET 
+			$sql = "UPDATE kpi_scores SET 
             productivity = ?, productivity_desc = ?,
             efficiency   = ?, efficiency_desc   = ?,
             quality      = ?, quality_desc      = ?,
@@ -174,54 +174,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             undertime    = ?, undertime_desc    = ?,
             total_score  = ?, grade             = ?,
 			schedule_adherence = ?, month = ? WHERE id = ?";
-		$stmt = $conn->prepare($sql);
-		$stmt->bind_param(
-			'dsdsdsdsdsdsdsdsi',
-			$prod,
-			$productivity_desc,
-			$eff,
-			$efficiency_desc,
-			$qual,
-			$quality_desc,
-			$attendance,
-			$attendance_desc,
-			$tardiness,
-			$tardiness_desc,
-			$undertime,
-			$undertime_desc,
-			$total,
-			$grade,
-			$schedule_total,
-			$month,
-			$id
-		);
+			$stmt = $conn->prepare($sql);
+			$stmt->bind_param(
+				'dsdsdsdsdsdsdsdsi',
+				$prod,
+				$productivity_desc,
+				$eff,
+				$efficiency_desc,
+				$qual,
+				$quality_desc,
+				$attendance,
+				$attendance_desc,
+				$tardiness,
+				$tardiness_desc,
+				$undertime,
+				$undertime_desc,
+				$total,
+				$grade,
+				$schedule_total,
+				$month,
+				$id
+			);
 		} else {
-		$sql = "INSERT INTO kpi_scores 
+			$sql = "INSERT INTO kpi_scores 
 			(user_id, productivity, productivity_desc, efficiency, efficiency_desc, quality, quality_desc,
 			 attendance, attendance_desc, tardiness, tardiness_desc, undertime, undertime_desc, total_score, grade, month, schedule_adherence)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		$stmt = $conn->prepare($sql);
-		// types: i d s d s d s d s d s d s d s s d
-		$stmt->bind_param(
-			'idsdsdsdsdsdsdssd',
-			$user_id,
-			$prod,
-			$productivity_desc,
-			$eff,
-			$efficiency_desc,
-			$qual,
-			$quality_desc,
-			$attendance,
-			$attendance_desc,
-			$tardiness,
-			$tardiness_desc,
-			$undertime,
-			$undertime_desc,
-			$total,
-			$grade,
-			$month,
-			$schedule_total
-		);
+			$stmt = $conn->prepare($sql);
+			// types: i d s d s d s d s d s d s d s s d
+			$stmt->bind_param(
+				'idsdsdsdsdsdsdssd',
+				$user_id,
+				$prod,
+				$productivity_desc,
+				$eff,
+				$efficiency_desc,
+				$qual,
+				$quality_desc,
+				$attendance,
+				$attendance_desc,
+				$tardiness,
+				$tardiness_desc,
+				$undertime,
+				$undertime_desc,
+				$total,
+				$grade,
+				$month,
+				$schedule_total
+			);
 		}
 	} // end if not has_error
 
@@ -243,136 +243,158 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 // Employee dropdown logic: show all employees so admin can add KPI for different months
 $users = $conn->query("SELECT * FROM users WHERE role='employee'");
+
+include('../includes/body-intro.php');
 ?>
 
-<body>
-	<?php include('../includes/navbar.php'); ?>
-	<div class="container-fluid">
-		<div class="row min-100vh">
-			<?php include('../includes/sidebar.php'); ?>
-			<main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
-				<h2 class="mb-4"><?= $editing ? "Edit KPI" : "Add KPI" ?></h2>
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
 
-				<form method="POST" class="card p-4 shadow-sm">
-					<?php if ($editing): ?>
-						<input type="hidden" name="id" value="<?= (int) $kpi['id'] ?>">
-					<?php endif; ?>
+	<div class="page-content">
+		<div class="container-fluid">
 
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label class="form-label">Employee Name</label>
-							<select name="user_id" class="form-select" <?= $editing ? 'disabled' : '' ?> required>
-								<option value="">Select Employee</option>
-								<?php while ($u = $users->fetch_assoc()): ?>
-									<option value="<?= (int) $u['id'] ?>" <?= ($u['id'] == $kpi['user_id']) ? 'selected' : '' ?>>
-										<?= htmlspecialchars((string) $u['name'], ENT_QUOTES, 'UTF-8') ?>
-									</option>
-								<?php endwhile; ?>
-							</select>
-							<?php if ($editing): ?>
-								<input type="hidden" name="user_id" value="<?= (int) $kpi['user_id'] ?>">
-							<?php endif; ?>
-						</div>
-						<div class="col-md-6 mb-3">
-							<label class="form-label">Month</label>
-							<input type="month" name="month" class="form-control" <?= $editing ? 'disabled' : '' ?> required value="<?= isset($kpi['month']) && $kpi['month'] !== '' ? htmlspecialchars(substr($kpi['month'], 0, 7), ENT_QUOTES, 'UTF-8') : '' ?>">
-							<?php if ($editing && isset($kpi['month']) && $kpi['month'] !== ''): ?>
-								<!-- disabled inputs are not submitted; include hidden field so month value is posted when editing -->
-								<input type="hidden" name="month" value="<?= htmlspecialchars(substr($kpi['month'], 0, 10), ENT_QUOTES, 'UTF-8') ?>">
-							<?php endif; ?>
-						</div>
-						<div class="col-md-12 mb-3">
-							<?php if ($users->num_rows == 0 && !$editing): ?>
-								<div class="alert alert-warning mt-3">
-									All employees already have KPI records assigned.
-								</div>
-							<?php endif; ?>
-						</div>
+			<!-- start page title -->
+			<div class="row">
+				<div class="col-12">
+					<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+						<h4 class="mb-sm-0"><?= $editing ? "Edit KPI" : "Add KPI" ?></h4>
 					</div>
-
-					<div class="row">
-						<div class="col-md-4 mb-3">
-							<label class="kpi_label">Productivity (40%)</label>
-							<select name="productivity" class="form-select" required>
-								<option value="">Select</option>
-								<?php loadOptions($conn, 'Productivity', $kpi['productivity']); ?>
-							</select>
-						</div>
-						<div class="col-md-4 mb-3">
-							<label class="kpi_label">Efficiency (20%)</label>
-							<select name="efficiency" class="form-select" required>
-								<option value="">Select</option>
-								<?php loadOptions($conn, 'Efficiency', $kpi['efficiency']); ?>
-							</select>
-						</div>
-						<div class="col-md-4 mb-3">
-							<label class="kpi_label">Quality (20%)</label>
-							<select name="quality" class="form-select" required>
-								<option value="">Select</option>
-								<?php loadOptions($conn, 'Quality', $kpi['quality']); ?>
-							</select>
-						</div>
-					</div>
-
-					<h5 class="kpi_label">Schedule Adherence (20%)</h5>
-					<div class="row">
-						<div class="col-md-4 mb-3">
-							<label>Attendance (10%)</label>
-							<select name="attendance" class="form-select" required>
-								<option value="">Select</option>
-								<?php loadOptions($conn, 'Attendance', $kpi['attendance']); ?>
-							</select>
-						</div>
-						<div class="col-md-4 mb-3">
-							<label>Tardiness (5%)</label>
-							<select name="tardiness" class="form-select" required>
-								<option value="">Select</option>
-								<?php loadOptions($conn, 'Tardiness', $kpi['tardiness']); ?>
-							</select>
-						</div>
-						<div class="col-md-4 mb-3">
-							<label>Undertime (5%)</label>
-							<select name="undertime" class="form-select" required>
-								<option value="">Select</option>
-								<?php loadOptions($conn, 'Undertime', $kpi['undertime']); ?>
-							</select>
-						</div>
-					</div>
-
-					<div class="container-fluid d-flex flex-row p-0 gap-3">
-						<button type="submit" class="btn btn-primary"><?= $editing ? "Update" : "Save" ?></button>
-						<a href="dashboard.php" class="btn btn-danger">Cancel</a>
-					</div>
-				</form>
-
-				<?php if ($show_modal): ?>
-				<!-- Modal -->
-				<div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
-				  <div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-					  <div class="modal-header">
-						<h5 class="modal-title">Error</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					  </div>
-					  <div class="modal-body">
-						<p><?= htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8') ?></p>
-					  </div>
-					  <div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					  </div>
-					</div>
-				  </div>
 				</div>
+			</div>
+			<!-- end page title -->
+			<div class="row">
+				<div class="col-xl-12">
+					<div class="card">
+						<div class="card-body">
+							<form method="POST" class="p-4">
+								<?php if ($editing): ?>
+									<input type="hidden" name="id" value="<?= (int) $kpi['id'] ?>">
+								<?php endif; ?>
 
-				<script>
-				document.addEventListener('DOMContentLoaded', function () {
+								<div class="row">
+									<div class="col-md-6 mb-3">
+										<label class="form-label">Employee Name</label>
+										<select name="user_id" class="form-select" <?= $editing ? 'disabled' : '' ?> required>
+											<option value="">Select Employee</option>
+											<?php while ($u = $users->fetch_assoc()): ?>
+												<option value="<?= (int) $u['id'] ?>" <?= ($u['id'] == $kpi['user_id']) ? 'selected' : '' ?>>
+													<?= htmlspecialchars((string) $u['name'], ENT_QUOTES, 'UTF-8') ?>
+												</option>
+											<?php endwhile; ?>
+										</select>
+										<?php if ($editing): ?>
+											<input type="hidden" name="user_id" value="<?= (int) $kpi['user_id'] ?>">
+										<?php endif; ?>
+									</div>
+									<div class="col-md-6 mb-3">
+										<label class="form-label">Month</label>
+										<input type="month" name="month" class="form-control" <?= $editing ? 'disabled' : '' ?> required value="<?= isset($kpi['month']) && $kpi['month'] !== '' ? htmlspecialchars(substr($kpi['month'], 0, 7), ENT_QUOTES, 'UTF-8') : '' ?>">
+										<?php if ($editing && isset($kpi['month']) && $kpi['month'] !== ''): ?>
+											<!-- disabled inputs are not submitted; include hidden field so month value is posted when editing -->
+											<input type="hidden" name="month" value="<?= htmlspecialchars(substr($kpi['month'], 0, 10), ENT_QUOTES, 'UTF-8') ?>">
+										<?php endif; ?>
+									</div>
+									<div class="col-md-12 mb-3">
+										<?php if ($users->num_rows == 0 && !$editing): ?>
+											<div class="alert alert-warning mt-3">
+												All employees already have KPI records assigned.
+											</div>
+										<?php endif; ?>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-4 mb-3">
+										<label class="kpi_label">Productivity (40%)</label>
+										<select name="productivity" class="form-select" required>
+											<option value="">Select</option>
+											<?php loadOptions($conn, 'Productivity', $kpi['productivity']); ?>
+										</select>
+									</div>
+									<div class="col-md-4 mb-3">
+										<label class="kpi_label">Efficiency (20%)</label>
+										<select name="efficiency" class="form-select" required>
+											<option value="">Select</option>
+											<?php loadOptions($conn, 'Efficiency', $kpi['efficiency']); ?>
+										</select>
+									</div>
+									<div class="col-md-4 mb-3">
+										<label class="kpi_label">Quality (20%)</label>
+										<select name="quality" class="form-select" required>
+											<option value="">Select</option>
+											<?php loadOptions($conn, 'Quality', $kpi['quality']); ?>
+										</select>
+									</div>
+								</div>
+
+								<h5 class="kpi_label">Schedule Adherence (20%)</h5>
+								<div class="row">
+									<div class="col-md-4 mb-3">
+										<label>Attendance (10%)</label>
+										<select name="attendance" class="form-select" required>
+											<option value="">Select</option>
+											<?php loadOptions($conn, 'Attendance', $kpi['attendance']); ?>
+										</select>
+									</div>
+									<div class="col-md-4 mb-3">
+										<label>Tardiness (5%)</label>
+										<select name="tardiness" class="form-select" required>
+											<option value="">Select</option>
+											<?php loadOptions($conn, 'Tardiness', $kpi['tardiness']); ?>
+										</select>
+									</div>
+									<div class="col-md-4 mb-3">
+										<label>Undertime (5%)</label>
+										<select name="undertime" class="form-select" required>
+											<option value="">Select</option>
+											<?php loadOptions($conn, 'Undertime', $kpi['undertime']); ?>
+										</select>
+									</div>
+								</div>
+
+								<div class="container-fluid d-flex flex-row p-0 gap-3">
+									<button type="submit" class="btn btn-primary"><?= $editing ? "Update" : "Save" ?></button>
+									<a href="dashboard.php" class="btn btn-danger">Cancel</a>
+								</div>
+							</form>
+
+						</div><!-- end card -->
+					</div><!-- end card -->
+				</div>
+			</div>
+			<!-- end row -->
+		</div> <!-- container-fluid -->
+		<?php if ($show_modal): ?>
+			<!-- Modal -->
+			<div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Error</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p><?= htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8') ?></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', function() {
 					var m = new bootstrap.Modal(document.getElementById('errorModal'));
 					m.show();
 				});
-				</script>
-				<?php endif; ?>
-			</main>
-		</div>
+			</script>
+		<?php endif; ?>
 	</div>
+	<!-- End Page-content -->
+</div>
+<!-- end main content-->
 
-	<?php include('../includes/footer.php'); ?>
+<?php include('../includes/footer.php'); ?>
