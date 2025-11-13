@@ -9,9 +9,14 @@ include('../includes/header.php');
 
 $user_id = intval($_SESSION['user_id']);
 // month filter (allow employee to view KPI for a month)
-$selected_month = isset($_GET['month']) ? trim($_GET['month']) : date('Y-m');
+$max_month = date('Y-m', strtotime('first day of last month'));
+$selected_month = isset($_GET['month']) ? trim($_GET['month']) : $max_month;
 if (!preg_match('/^\d{4}-\d{2}$/', $selected_month)) {
-    $selected_month = date('Y-m');
+    $selected_month = $max_month;
+}
+// Prevent selecting a future month (clamp to current month)
+if ($selected_month > $max_month) {
+    $selected_month = $max_month;
 }
 $selected_month_date = $selected_month . '-01';
 
@@ -47,8 +52,7 @@ if ($uStmt) {
                 <div class="d-flex justify-content-between align-items-center mb-5">
                     <h2 style="margin-bottom:0;"><?= htmlspecialchars($user_name ?: ($k['name'] ?? '')) ?></h2>
                     <form method="GET" class="d-flex">
-                        <input type="month" name="month" class="form-control" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>">
-                        <!-- <button class="btn btn-primary" type="submit">Filter</button> -->
+                        <input type="month" name="month" class="form-control" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>" max="<?= htmlspecialchars($max_month, ENT_QUOTES, 'UTF-8') ?>">
                     </form>
                 </div>
 

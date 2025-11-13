@@ -7,10 +7,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
 include('../config/db.php');
 include('../includes/header.php');
 
-$selected_month = isset($_GET['month']) ? trim($_GET['month']) : date('Y-m');
-// validate YYYY-MM
+$max_month = date('Y-m', strtotime('first day of last month'));
+$selected_month = isset($_GET['month']) ? trim($_GET['month']) : $max_month;
 if (!preg_match('/^\d{4}-\d{2}$/', $selected_month)) {
-	$selected_month = date('Y-m');
+    $selected_month = $max_month;
+}
+// Prevent selecting a future month (clamp to current month)
+if ($selected_month > $max_month) {
+    $selected_month = $max_month;
 }
 $selected_month_date = $selected_month . '-01';
 
@@ -28,8 +32,7 @@ $res = $conn->query($sql);
 					<h2>Admin Dashboard</h2>
 					<div class="d-flex gap-2">
 						<form class="d-flex" method="GET">
-							<input type="month" name="month" class="form-control me-2" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>">
-							<!-- <button class="btn btn-secondary" type="submit">Filter</button> -->
+							<input type="month" name="month" class="form-control me-2" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>" max="<?= htmlspecialchars($max_month, ENT_QUOTES, 'UTF-8') ?>">
 						</form>
 						<a href="add_kpi.php" class="btn btn-primary">+ Add KPI</a>
 					</div>
