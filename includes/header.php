@@ -14,9 +14,16 @@
 	<link rel="stylesheet" href="/assets/css/sign-in.css">
 
 	<!-- Bootstrap Css -->
-    <link href="/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+	<!-- Icons Css -->
+	<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+	<!-- App Css-->
+	<link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+	<style>
+		.rating-title {
+			font-size: 52px;
+			font-weight: 700;
+			line-height: 52px;
+		}
+	</style>
 </head>
