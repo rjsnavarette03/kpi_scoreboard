@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include('includes/header.php');
 ?>
 
-<body class="d-flex align-items-center py-4 bg-body-tertiary" style="justify-content: center;">
+<body class="d-flex align-items-center py-4 bg-body-tertiary" style="justify-content: center;flex-direction:column;">
 	<?php if ($error): ?>
 		<div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
 	<?php endif; ?>
@@ -52,5 +52,4 @@ include('includes/header.php');
 
 		</form>
 		<span class="agreement"><a href="https://www.virtualventuresph.com/" target="_blank">Copyrights &copy; <?php echo date('Y'); ?></a></span>
-	</div>
 	<?php include('includes/footer.php'); ?>
