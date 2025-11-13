@@ -41,263 +41,292 @@ if ($uStmt) {
     }
     $uStmt->close();
 }
+include('../includes/body-intro.php');
 ?>
 
-<body>
-    <?php include('../includes/navbar.php'); ?>
-    <div class="container-fluid">
-        <div class="row min-100vh">
-            <?php include('../includes/sidebar.php'); ?>
-            <main class="col-md-9 ms-sm-auto col-lg-10 p-md-5 neumorph-container">
-                <div class="d-flex justify-content-between align-items-center mb-5">
-                    <h2 style="margin-bottom:0;"><?= htmlspecialchars($user_name ?: ($k['name'] ?? '')) ?></h2>
-                    <form method="GET" class="d-flex">
-                        <input type="month" name="month" class="form-control" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>" max="<?= htmlspecialchars($max_month, ENT_QUOTES, 'UTF-8') ?>">
-                    </form>
-                </div>
+<div class="main-content">
 
-                <?php if ($k): ?>
-                    <!-- <h5 class="card-title" style="margin-bottom:2rem;"></h5> -->
-                    <div class="row">
-                        <!-- Productivity -->
-                        <div class="col-xl-4 col-md-6 mb-4">
-                            <div class="card border border-0 h-100 py-2 neumorph">
-                                <div class="card-body">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="h1 mb-0 font-weight-bold text-gray-800">
-                                                <?= $k['productivity'] ?>&#37;
-                                            </div>
-                                            <div class="fw-bold text-uppercase mb-1">
-                                                Productivity</div>
-                                        </div>
-                                        <span class="col-auto" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            data-bs-title="Test">
-                                            <i class="fas fa-chart-line fa-2x text-primary"></i>
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0"><?= htmlspecialchars($user_name ?: ($k['name'] ?? '')) ?></h4>
+
+                        <div class="page-title-right d-flex">
+                            <form method="GET" class="d-flex">
+                                <input type="month" name="month" class="form-control" value="<?= htmlspecialchars($selected_month, ENT_QUOTES, 'UTF-8') ?>" max="<?= htmlspecialchars($max_month, ENT_QUOTES, 'UTF-8') ?>">
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <?php if ($k): ?>
+                <div class="row">
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <p class="text-truncate font-size-14 mb-2">Productivity</p>
+                                        <h4 class="mb-2"><?= $k['productivity'] ?>&#37;</h4>
+                                        <p class="text-muted mb-0"><?= $k['productivity_desc'] ?></p>
+                                    </div>
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-light text-primary rounded-3">
+                                            <i class="ri-bar-chart-line font-size-24"></i>
                                         </span>
                                     </div>
-                                    <hr>
-                                    <p><?= $k['productivity_desc'] ?></p>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- Efficiency -->
-                        <div class="col-xl-4 col-md-6 mb-4">
-                            <div class="card border border-0 h-100 py-2 neumorph">
-                                <div class="card-body">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="h1 mb-0 font-weight-bold text-gray-800"><?= $k['efficiency'] ?>&#37;
-                                            </div>
-                                            <div class="fw-bold text-uppercase mb-1">
-                                                Efficiency</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-bolt fa-2x text-warning"></i>
-                                        </div>
+                            </div><!-- end cardbody -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <p class="text-truncate font-size-14 mb-2">Efficiency</p>
+                                        <h4 class="mb-2"><?= $k['efficiency'] ?>&#37;</h4>
+                                        <p class="text-muted mb-0"><?= $k['efficiency_desc'] ?></p>
                                     </div>
-                                    <hr>
-                                    <p><?= $k['efficiency_desc'] ?></p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Quality -->
-                        <div class="col-xl-4 col-md-6 mb-4">
-                            <div class="card border border-0 h-100 py-2 neumorph">
-                                <div class="card-body">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="h1 mb-0 font-weight-bold text-gray-800"><?= $k['quality'] ?>&#37;
-                                            </div>
-                                            <div class="fw-bold text-uppercase mb-1">
-                                                Quality</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-star fa-2x text-success"></i>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <p><?= $k['quality_desc'] ?></p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Schedule Adherence -->
-                        <div class="col-xl-12 col-md-12 mb-4">
-                            <div class="card border border-0 h-100 py-2 neumorph">
-                                <div class="card-body">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="h1 mb-0 font-weight-bold text-gray-800">
-                                                <?= $k['schedule_adherence'] ?>&#37;
-                                            </div>
-                                            <div class="fw-bold text-uppercase mb-1">
-                                                Schedule Adherence</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar-check fa-2x text-danger"></i>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <!-- Attendance -->
-                                        <div class="col-xl-4 col-md-12 mb-4">
-                                            <div class="card border border-0 h-100 bg-transparent">
-                                                <div class="card-body border border-dark-subtle rounded-2">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col">
-                                                            <div class="fw-bold mb-1">
-                                                                Attendance - <?= $k['attendance'] ?>&#37;
-                                                            </div>
-                                                            <em class="m-0"><?= $k['attendance_desc'] ?></em>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Tardiness -->
-                                        <div class="col-xl-4 col-md-12 mb-4">
-                                            <div class="card border border-0 h-100 bg-transparent">
-                                                <div class="card-body border border-dark-subtle rounded-2">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col">
-                                                            <div class="fw-bold mb-1">
-                                                                Tardiness - <?= $k['tardiness'] ?>&#37;
-                                                            </div>
-                                                            <em class="m-0"><?= $k['tardiness_desc'] ?></em>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Undertime -->
-                                        <div class="col-xl-4 col-md-12 mb-4">
-                                            <div class="card border border-0 h-100 bg-transparent">
-                                                <div class="card-body border border-dark-subtle rounded-2">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col">
-                                                            <div class="fw-bold mb-1">
-                                                                Undertime - <?= $k['undertime'] ?>&#37;
-                                                            </div>
-                                                            <em class="m-0"><?= $k['undertime_desc'] ?></em>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-light text-success rounded-3">
+                                            <i class="ri-flashlight-line font-size-24"></i>
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Performance Grade -->
-                        <div class="col-xl-12 col-md-12 mb-4">
-                            <div class="custom-card">
-                                <div class="row z-1 flex-row w-100">
-                                    <div class="col-xl-3 col-md-6 d-flex flex-column justify-content-center align-items-center">
-                                        <h2><?= $k['total_score'] ?>&#37;</h2>
-                                        <p>Total Score</p>
+                            </div><!-- end cardbody -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <p class="text-truncate font-size-14 mb-2">Quality</p>
+                                        <h4 class="mb-2"><?= $k['quality'] ?>&#37;</h4>
+                                        <p class="text-muted mb-0"><?= $k['quality_desc'] ?></p>
                                     </div>
-                                    <div class="col-xl-3 col-md-6 d-flex flex-column justify-content-center align-items-center border-start">
-                                        <h2><?= $k['grade'] ?></h2>
-                                        <p>Performance Grade</p>
-                                    </div>
-                                    <div class="col-xl-6 col-md-6 d-flex flex-column align-items-center border-start px-5">
-                                        <table class="table table-borderless table-dark table-hover table-transparent m-0 w-75">
-                                            <tbody>
-                                                <tr>
-                                                    <td style="width: 40%;">100%</td>
-                                                    <td style="width: 20%;">EX</td>
-                                                    <td style="width: 40%;">Exceptional</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>95% - 99.99%</td>
-                                                    <td>EE</td>
-                                                    <td>Exceeds Expectations</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>90% - 94.99%</td>
-                                                    <td>ME</td>
-                                                    <td>Meets Expectations</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>85% - 89.99%</td>
-                                                    <td>NI</td>
-                                                    <td>Needs Improvement</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>&lt;85%</td>
-                                                    <td>UN</td>
-                                                    <td>Unsatisfactory</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-light text-primary rounded-3">
+                                            <i class="ri-check-double-line font-size-24"></i>
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php else: ?>
-                    <div class="alert alert-info">No KPI data found for you for <?= htmlspecialchars(date('F Y', strtotime($selected_month_date)), ENT_QUOTES, 'UTF-8') ?>.</div>
-                <?php endif; ?>
-            </main>
-        </div>
-    </div>
+                            </div><!-- end cardbody -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <p class="text-truncate font-size-14 mb-2">Attendance</p>
+                                        <h4 class="mb-2"><?= $k['attendance'] ?>&#37;</h4>
+                                        <p class="text-muted mb-0"><?= $k['attendance_desc'] ?></p>
+                                    </div>
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-light text-success rounded-3">
+                                            <i class="ri-user-follow-line font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div><!-- end cardbody -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <p class="text-truncate font-size-14 mb-2">Tardiness</p>
+                                        <h4 class="mb-2"><?= $k['tardiness'] ?>&#37;</h4>
+                                        <p class="text-muted mb-0"><?= $k['tardiness_desc'] ?></p>
+                                    </div>
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-light text-primary rounded-3">
+                                            <i class="ri-time-line font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div><!-- end cardbody -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <p class="text-truncate font-size-14 mb-2">Undertime</p>
+                                        <h4 class="mb-2"><?= $k['undertime'] ?>&#37;</h4>
+                                        <p class="text-muted mb-0"><?= $k['undertime_desc'] ?></p>
+                                    </div>
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-light text-success rounded-3">
+                                            <i class="ri-timer-flash-line font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div><!-- end cardbody -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
 
-    <!-- Loading overlay (hidden by default) -->
-    <div id="loading-overlay" class="d-none position-fixed top-0 start-0 w-100 h-100" style="background: rgba(0,0,0,0.5); z-index: 9999;">
-        <div class="d-flex h-100 align-items-center justify-content-center">
-            <div class="text-center text-white">
-                <div class="spinner-border text-light" role="status"><span class="visually-hidden">Loading...</span></div>
-                <div class="mt-2">Loading…</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Auto-submit month filter and show overlay when submitting -->
-    <script>
-        (function() {
-            document.addEventListener('DOMContentLoaded', function() {
-                var monthInput = document.querySelector('input[type="month"][name="month"]');
-                var overlay = document.getElementById('loading-overlay');
-
-                function showOverlay() {
-                    if (!overlay) return;
-                    overlay.classList.remove('d-none');
-                    // Force repaint so overlay appears before navigation
-                    overlay.offsetHeight;
-                }
-
-                if (monthInput && monthInput.form) {
-                    var form = monthInput.form;
-                    // Prevent double submits
-                    form.__submitting = false;
-
-                    form.addEventListener('submit', function(e) {
-                        if (form.__submitting) {
-                            // already submitting, block
-                            e.preventDefault();
-                            return;
-                        }
-                        form.__submitting = true;
-                        showOverlay();
-                    });
-
-                    monthInput.addEventListener('change', function() {
-                        // Show overlay, then submit. Small timeout helps ensure overlay renders.
-                        showOverlay();
-                        setTimeout(function() {
-                            // Use requestSubmit if available to ensure HTML5 validation runs
-                            if (typeof form.requestSubmit === 'function') {
-                                form.requestSubmit();
-                            } else {
-                                form.submit();
+                <div class="row mt-5">
+                    <div class="col-xl-12">
+                        <style>
+                            .premium-container {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
                             }
-                        }, 50);
-                    });
-                }
-            });
-        })();
-    </script>
 
-    <?php include('../includes/footer.php'); ?>
+                            .card_box {
+                                width: 300px;
+                                height: 250px;
+                                border-radius: 20px;
+                                background: linear-gradient(170deg, rgba(58, 56, 56, 0.623) 0%, rgb(31, 31, 31) 100%);
+                                position: relative;
+                                box-shadow: 0 25px 30px rgba(0, 0, 0, 0.55);
+                                transition: all .3s;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                flex-direction: column;
+                            }
+
+                            .card_box span {
+                                position: absolute;
+                                overflow: hidden;
+                                width: 150px;
+                                height: 150px;
+                                top: -10px;
+                                left: -10px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+
+                            .card_box span::before {
+                                content: 'Total Score';
+                                position: absolute;
+                                width: 150%;
+                                height: 40px;
+                                background-image: linear-gradient(45deg, #ff6547 0%, #ffb144 51%, #ff7053 100%);
+                                transform: rotate(-45deg) translateY(-20px);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: #fff;
+                                font-weight: 600;
+                                letter-spacing: 0.1em;
+                                text-transform: uppercase;
+                                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.23);
+                            }
+
+                            .card_box span::after {
+                                content: '';
+                                position: absolute;
+                                width: 10px;
+                                bottom: 0;
+                                left: 0;
+                                height: 10px;
+                                z-index: -1;
+                                box-shadow: 140px -140px #cc3f47;
+                                background-image: linear-gradient(45deg, #FF512F 0%, #F09819 51%, #FF512F 100%);
+                            }
+
+                            .card_box .card_box_text {
+                                color: #FFFFFF;
+                                margin: 0;
+                                font-family: Inter, sans-serif;
+                                font-size: 58px;
+                                line-height: 58px;
+                                font-weight: 600;
+                            }
+                            .card_box .card_box_text.card_box_text_sm {
+                                font-size: 29px;
+                                line-height: 29px;
+                                font-weight: 400;
+                            }
+                        </style>
+                        <div class="premium-container">
+                            <div class="card_box">
+                                <span></span>
+                                <p class="card_box_text mb-2"><?= $k['grade'] ?></p>
+                                <p class="card_box_text card_box_text_sm"><?= $k['total_score'] ?>&#37;</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="alert alert-info">No KPI data found for you for <?= htmlspecialchars(date('F Y', strtotime($selected_month_date)), ENT_QUOTES, 'UTF-8') ?>.</div>
+            <?php endif; ?>
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+</div>
+<!-- end main content-->
+
+<!-- Loading overlay (hidden by default) -->
+<div id="loading-overlay" class="d-none position-fixed top-0 start-0 w-100 h-100" style="background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div class="d-flex h-100 align-items-center justify-content-center">
+        <div class="text-center text-white">
+            <div class="spinner-border text-light" role="status"><span class="visually-hidden">Loading...</span></div>
+            <div class="mt-2">Loading…</div>
+        </div>
+    </div>
+</div>
+
+<!-- Auto-submit month filter and show overlay when submitting -->
+<script>
+    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            var monthInput = document.querySelector('input[type="month"][name="month"]');
+            var overlay = document.getElementById('loading-overlay');
+
+            function showOverlay() {
+                if (!overlay) return;
+                overlay.classList.remove('d-none');
+                // Force repaint so overlay appears before navigation
+                overlay.offsetHeight;
+            }
+
+            if (monthInput && monthInput.form) {
+                var form = monthInput.form;
+                // Prevent double submits
+                form.__submitting = false;
+
+                form.addEventListener('submit', function(e) {
+                    if (form.__submitting) {
+                        // already submitting, block
+                        e.preventDefault();
+                        return;
+                    }
+                    form.__submitting = true;
+                    showOverlay();
+                });
+
+                monthInput.addEventListener('change', function() {
+                    // Show overlay, then submit. Small timeout helps ensure overlay renders.
+                    showOverlay();
+                    setTimeout(function() {
+                        // Use requestSubmit if available to ensure HTML5 validation runs
+                        if (typeof form.requestSubmit === 'function') {
+                            form.requestSubmit();
+                        } else {
+                            form.submit();
+                        }
+                    }, 50);
+                });
+            }
+        });
+    })();
+</script>
+
+<?php include('../includes/footer.php'); ?>
