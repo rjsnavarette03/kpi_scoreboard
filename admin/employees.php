@@ -90,7 +90,6 @@ $result = $conn->query("SELECT * FROM users WHERE role = 'employee' ORDER BY id 
                 <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
                             <th>Username</th>
                             <th>Role</th>
@@ -100,7 +99,6 @@ $result = $conn->query("SELECT * FROM users WHERE role = 'employee' ORDER BY id 
                     <tbody>
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?= $row['id']; ?></td>
                                 <td><?= htmlspecialchars($row['name']); ?></td>
                                 <td><?= htmlspecialchars($row['username']); ?></td>
                                 <td><?= ucfirst($row['role']); ?></td>
