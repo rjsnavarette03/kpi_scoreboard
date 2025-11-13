@@ -144,7 +144,7 @@ if ($uStmt) {
                                                             <div class="fw-bold mb-1">
                                                                 Attendance - <?= $k['attendance'] ?>&#37;
                                                             </div>
-                                                            <em class="m-0"><?= $k['attendance_desc'] ?>&#37;</em>
+                                                            <em class="m-0"><?= $k['attendance_desc'] ?></em>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -159,7 +159,7 @@ if ($uStmt) {
                                                             <div class="fw-bold mb-1">
                                                                 Tardiness - <?= $k['tardiness'] ?>&#37;
                                                             </div>
-                                                            <em class="m-0"><?= $k['tardiness_desc'] ?>&#37;</em>
+                                                            <em class="m-0"><?= $k['tardiness_desc'] ?></em>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -174,7 +174,7 @@ if ($uStmt) {
                                                             <div class="fw-bold mb-1">
                                                                 Undertime - <?= $k['undertime'] ?>&#37;
                                                             </div>
-                                                            <em class="m-0"><?= $k['undertime_desc'] ?>&#37;</em>
+                                                            <em class="m-0"><?= $k['undertime_desc'] ?></em>
                                                         </div>
                                                     </div>
                                                 </div>
