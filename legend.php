@@ -38,7 +38,7 @@ include('includes/body-intro.php');
                                             <th>Definitions</th>
                                             <th>Percentage</th>
                                         </tr>
-                                    </thead><!-- end thead -->
+                                    </thead>
                                     <tbody>
                                         <tr>
                                             <td>Productivity</td>
@@ -79,26 +79,26 @@ include('includes/body-intro.php');
                                                     <th>Productivity (40%)</th>
                                                     <th style="width:75px;">Scoring</th>
                                                 </tr>
-                                            </thead><!-- end thead -->
+                                            </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Productivity Description One</td>
+                                                    <td>400 mins and up</td>
                                                     <td>100</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Productivity Description Two</td>
+                                                    <td>370 - 399 mins</td>
                                                     <td>95</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Productivity Description Three</td>
+                                                    <td>350 - 369 mins</td>
                                                     <td>90</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Productivity Description Four</td>
+                                                    <td>320 - 349 mins</td>
                                                     <td>85</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Productivity Description Five</td>
+                                                    <td>319 and below</td>
                                                     <td>80</td>
                                                 </tr>
                                             </tbody><!-- end tbody -->
@@ -113,7 +113,7 @@ include('includes/body-intro.php');
                                                     <th>Efficiency (20%)</th>
                                                     <th style="width:75px;">Scoring</th>
                                                 </tr>
-                                            </thead><!-- end thead -->
+                                            </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>Meeting weekly productivity target</td>
@@ -147,7 +147,7 @@ include('includes/body-intro.php');
                                                     <th>Quality (20%)</th>
                                                     <th style="width:75px;">Scoring</th>
                                                 </tr>
-                                            </thead><!-- end thead -->
+                                            </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>100% accuracy and zero patient/client escalation</td>
@@ -173,7 +173,7 @@ include('includes/body-intro.php');
                                         </table> <!-- end table -->
                                     </div>
                                 </div>
-                                <div class="col-xl-4">
+                                <div class="col-xl-4 mt-4">
                                     <div class="table-responsive">
                                         <table class="table table-centered mb-0 align-middle table-hover table-nowrap">
                                             <thead class="table-info">
@@ -181,7 +181,7 @@ include('includes/body-intro.php');
                                                     <th>Attendance (10%)</th>
                                                     <th style="width:75px;">Scoring</th>
                                                 </tr>
-                                            </thead><!-- end thead -->
+                                            </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>0 Absence</td>
@@ -199,7 +199,7 @@ include('includes/body-intro.php');
                                         </table> <!-- end table -->
                                     </div>
                                 </div>
-                                <div class="col-xl-4">
+                                <div class="col-xl-4 mt-4">
                                     <div class="table-responsive">
                                         <table class="table table-centered mb-0 align-middle table-hover table-nowrap">
                                             <thead class="table-info">
@@ -207,7 +207,7 @@ include('includes/body-intro.php');
                                                     <th>Tardiness (5%)</th>
                                                     <th style="width:75px;">Scoring</th>
                                                 </tr>
-                                            </thead><!-- end thead -->
+                                            </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>0 Tardiness</td>
@@ -229,7 +229,7 @@ include('includes/body-intro.php');
                                         </table> <!-- end table -->
                                     </div>
                                 </div>
-                                <div class="col-xl-4">
+                                <div class="col-xl-4 mt-4">
                                     <div class="table-responsive">
                                         <table class="table table-centered mb-0 align-middle table-hover table-nowrap">
                                             <thead class="table-info">
@@ -237,7 +237,7 @@ include('includes/body-intro.php');
                                                     <th>Undertime (5%)</th>
                                                     <th style="width:75px;">Scoring</th>
                                                 </tr>
-                                            </thead><!-- end thead -->
+                                            </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>0 Undertime</td>
